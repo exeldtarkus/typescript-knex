@@ -37,7 +37,7 @@ const envSchema = z.object({
 
 // === CLASS UNTUK MENGELOLA ENV ===
 class EnvironmentManager {
-  private env: Record<string, any>;
+  private env: z.infer<typeof envSchema>; // Use Zod inferred type
 
   constructor() {
     // Parsing dan validasi env dengan zod
@@ -51,7 +51,7 @@ class EnvironmentManager {
     this.env = _env.data;
   }
 
-  // Mengembalikan env yang sudah tervalidasi
+  // Mengembalikan env yang sudah tervalidasi dengan tipe yang sesuai
   getEnv() {
     return this.env;
   }
