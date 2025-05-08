@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:20
+    container_name: ms-games
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_DEBUG=${APP_DEBUG}
+      - APP_PORT=${APP_PORT}
+      - JWT_KEY_STORE_PASSWORD=${JWT_KEY_STORE_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_HOST_READ=${DB_HOST_READ}
+      - DB_HOST_PORT=${DB_HOST_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+    volumes:
+      - .:/ms-games/app  # Mount the local directory to /ms-games/app in the container
+      - /ms-games/app/node_modules  # Ensure node_modules is not overwritten
+    working_dir: /ms-games/app  # Ensure that this matches the mounted directory
+    command: >
+      bash -c "npm install && npx tsc && npm start"
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
